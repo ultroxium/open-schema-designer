@@ -1,95 +1,99 @@
 import { Schema, Table, TableField, Relationship } from '@/types/schema';
 import { v4 as uuidv4 } from 'uuid';
 
+// Fixed IDs for sample schemas to prevent duplicates
+const SAMPLE_ECOMMERCE_ID = 'sample-ecommerce-schema';
+const SAMPLE_BLOG_ID = 'sample-blog-schema';
+
 export function createSampleECommerceSchema(): Schema {
-  // Create tables
+  // Create tables with fixed IDs for sample data
   const usersTable: Table = {
-    id: uuidv4(),
+    id: 'users-table-id',
     name: 'users',
-    position: { x: 100, y: 100 },
+    position: { x: -210, y: 435 },
     fields: [
-      { id: uuidv4(), name: 'id', type: 'uuid', nullable: false, primaryKey: true, foreignKey: false, unique: true },
-      { id: uuidv4(), name: 'full_name', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: false, length: 255 },
-      { id: uuidv4(), name: 'email', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: true, length: 255 },
-      { id: uuidv4(), name: 'gender', type: 'varchar', nullable: true, primaryKey: false, foreignKey: false, unique: false, length: 10 },
-      { id: uuidv4(), name: 'date_of_birth', type: 'date', nullable: true, primaryKey: false, foreignKey: false, unique: false },
-      { id: uuidv4(), name: 'country_code', type: 'varchar', nullable: true, primaryKey: false, foreignKey: false, unique: false, length: 2 },
-      { id: uuidv4(), name: 'created_at', type: 'timestamp', nullable: false, primaryKey: false, foreignKey: false, unique: false }
+      { id: 'users-id-field', name: 'id', type: 'uuid', nullable: false, primaryKey: true, foreignKey: false, unique: true },
+      { id: 'users-name-field', name: 'full_name', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: false, length: 255 },
+      { id: 'users-email-field', name: 'email', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: true, length: 255 },
+      { id: 'users-gender-field', name: 'gender', type: 'varchar', nullable: true, primaryKey: false, foreignKey: false, unique: false, length: 10 },
+      { id: 'users-dob-field', name: 'date_of_birth', type: 'date', nullable: true, primaryKey: false, foreignKey: false, unique: false },
+      { id: 'users-country-field', name: 'country_code', type: 'varchar', nullable: true, primaryKey: false, foreignKey: false, unique: false, length: 2 },
+      { id: 'users-created-field', name: 'created_at', type: 'timestamp', nullable: false, primaryKey: false, foreignKey: false, unique: false }
     ]
   };
 
   const countriesTable: Table = {
-    id: uuidv4(),
+    id: 'countries-table-id',
     name: 'countries',
-    position: { x: 100, y: 600 },
+    position: { x: -30, y: 1170 },
     fields: [
-      { id: uuidv4(), name: 'code', type: 'varchar', nullable: false, primaryKey: true, foreignKey: false, unique: true, length: 2 },
-      { id: uuidv4(), name: 'name', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: false, length: 100 },
-      { id: uuidv4(), name: 'continent_name', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: false, length: 50 },
-      { id: uuidv4(), name: 'currency', type: 'varchar', nullable: true, primaryKey: false, foreignKey: false, unique: false, length: 10 }
+      { id: 'countries-code-field', name: 'code', type: 'varchar', nullable: false, primaryKey: true, foreignKey: false, unique: true, length: 2 },
+      { id: 'countries-name-field', name: 'name', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: false, length: 100 },
+      { id: 'countries-continent-field', name: 'continent_name', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: false, length: 50 },
+      { id: 'countries-currency-field', name: 'currency', type: 'varchar', nullable: true, primaryKey: false, foreignKey: false, unique: false, length: 10 }
     ]
   };
 
   const ordersTable: Table = {
-    id: uuidv4(),
+    id: 'orders-table-id',
     name: 'orders',
-    position: { x: 500, y: 100 },
+    position: { x: 375, y: 105 },
     fields: [
-      { id: uuidv4(), name: 'id', type: 'int', nullable: false, primaryKey: true, foreignKey: false, unique: true },
-      { id: uuidv4(), name: 'user_id', type: 'uuid', nullable: false, primaryKey: false, foreignKey: true, unique: false },
-      { id: uuidv4(), name: 'status', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: false, length: 20 },
-      { id: uuidv4(), name: 'total_amount', type: 'decimal', nullable: false, primaryKey: false, foreignKey: false, unique: false, precision: 10, scale: 2 },
-      { id: uuidv4(), name: 'created_at', type: 'timestamp', nullable: false, primaryKey: false, foreignKey: false, unique: false }
+      { id: 'orders-id-field', name: 'id', type: 'int', nullable: false, primaryKey: true, foreignKey: false, unique: true },
+      { id: 'orders-user-field', name: 'user_id', type: 'uuid', nullable: false, primaryKey: false, foreignKey: true, unique: false },
+      { id: 'orders-status-field', name: 'status', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: false, length: 20 },
+      { id: 'orders-amount-field', name: 'total_amount', type: 'decimal', nullable: false, primaryKey: false, foreignKey: false, unique: false, precision: 10, scale: 2 },
+      { id: 'orders-created-field', name: 'created_at', type: 'timestamp', nullable: false, primaryKey: false, foreignKey: false, unique: false }
     ]
   };
 
   const orderItemsTable: Table = {
-    id: uuidv4(),
+    id: 'order-items-table-id',
     name: 'order_items',
-    position: { x: 900, y: 100 },
+    position: { x: 1230, y: 300 },
     fields: [
-      { id: uuidv4(), name: 'id', type: 'int', nullable: false, primaryKey: true, foreignKey: false, unique: true },
-      { id: uuidv4(), name: 'order_id', type: 'int', nullable: false, primaryKey: false, foreignKey: true, unique: false },
-      { id: uuidv4(), name: 'product_id', type: 'int', nullable: false, primaryKey: false, foreignKey: true, unique: false },
-      { id: uuidv4(), name: 'quantity', type: 'int', nullable: false, primaryKey: false, foreignKey: false, unique: false },
-      { id: uuidv4(), name: 'unit_price', type: 'decimal', nullable: false, primaryKey: false, foreignKey: false, unique: false, precision: 8, scale: 2 }
+      { id: 'order-items-id-field', name: 'id', type: 'int', nullable: false, primaryKey: true, foreignKey: false, unique: true },
+      { id: 'order-items-order-field', name: 'order_id', type: 'int', nullable: false, primaryKey: false, foreignKey: true, unique: false },
+      { id: 'order-items-product-field', name: 'product_id', type: 'int', nullable: false, primaryKey: false, foreignKey: true, unique: false },
+      { id: 'order-items-quantity-field', name: 'quantity', type: 'int', nullable: false, primaryKey: false, foreignKey: false, unique: false },
+      { id: 'order-items-price-field', name: 'unit_price', type: 'decimal', nullable: false, primaryKey: false, foreignKey: false, unique: false, precision: 8, scale: 2 }
     ]
   };
 
   const productsTable: Table = {
-    id: uuidv4(),
+    id: 'products-table-id',
     name: 'products',
-    position: { x: 500, y: 400 },
+    position: { x: 525, y: 795 },
     fields: [
-      { id: uuidv4(), name: 'id', type: 'int', nullable: false, primaryKey: true, foreignKey: false, unique: true },
-      { id: uuidv4(), name: 'merchant_id', type: 'int', nullable: false, primaryKey: false, foreignKey: true, unique: false },
-      { id: uuidv4(), name: 'name', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: false, length: 255 },
-      { id: uuidv4(), name: 'description', type: 'text', nullable: true, primaryKey: false, foreignKey: false, unique: false },
-      { id: uuidv4(), name: 'price', type: 'decimal', nullable: false, primaryKey: false, foreignKey: false, unique: false, precision: 8, scale: 2 },
-      { id: uuidv4(), name: 'status', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: false, length: 20 },
-      { id: uuidv4(), name: 'created_at', type: 'timestamp', nullable: false, primaryKey: false, foreignKey: false, unique: false }
+      { id: 'products-id-field', name: 'id', type: 'int', nullable: false, primaryKey: true, foreignKey: false, unique: true },
+      { id: 'products-merchant-field', name: 'merchant_id', type: 'int', nullable: false, primaryKey: false, foreignKey: true, unique: false },
+      { id: 'products-name-field', name: 'name', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: false, length: 255 },
+      { id: 'products-desc-field', name: 'description', type: 'text', nullable: true, primaryKey: false, foreignKey: false, unique: false },
+      { id: 'products-price-field', name: 'price', type: 'decimal', nullable: false, primaryKey: false, foreignKey: false, unique: false, precision: 8, scale: 2 },
+      { id: 'products-status-field', name: 'status', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: false, length: 20 },
+      { id: 'products-created-field', name: 'created_at', type: 'timestamp', nullable: false, primaryKey: false, foreignKey: false, unique: false }
     ]
   };
 
   const merchantsTable: Table = {
-    id: uuidv4(),
+    id: 'merchants-table-id',
     name: 'merchants',
-    position: { x: 900, y: 400 },
+    position: { x: 1350, y: 870 },
     fields: [
-      { id: uuidv4(), name: 'id', type: 'int', nullable: false, primaryKey: true, foreignKey: false, unique: true },
-      { id: uuidv4(), name: 'name', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: false, length: 255 },
-      { id: uuidv4(), name: 'email', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: true, length: 255 },
-      { id: uuidv4(), name: 'country_code', type: 'varchar', nullable: false, primaryKey: false, foreignKey: true, unique: false, length: 2 },
-      { id: uuidv4(), name: 'created_at', type: 'timestamp', nullable: false, primaryKey: false, foreignKey: false, unique: false }
+      { id: 'merchants-id-field', name: 'id', type: 'int', nullable: false, primaryKey: true, foreignKey: false, unique: true },
+      { id: 'merchants-name-field', name: 'name', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: false, length: 255 },
+      { id: 'merchants-email-field', name: 'email', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: true, length: 255 },
+      { id: 'merchants-country-field', name: 'country_code', type: 'varchar', nullable: false, primaryKey: false, foreignKey: true, unique: false, length: 2 },
+      { id: 'merchants-created-field', name: 'created_at', type: 'timestamp', nullable: false, primaryKey: false, foreignKey: false, unique: false }
     ]
   };
 
   const tables = [usersTable, countriesTable, ordersTable, orderItemsTable, productsTable, merchantsTable];
 
-  // Create relationships
+  // Create relationships with fixed IDs
   const relationships: Relationship[] = [
     {
-      id: uuidv4(),
+      id: 'rel-orders-users',
       sourceTableId: ordersTable.id,
       sourceFieldId: ordersTable.fields.find(f => f.name === 'user_id')!.id,
       targetTableId: usersTable.id,
@@ -97,7 +101,7 @@ export function createSampleECommerceSchema(): Schema {
       type: 'many-to-one'
     },
     {
-      id: uuidv4(),
+      id: 'rel-users-countries',
       sourceTableId: usersTable.id,
       sourceFieldId: usersTable.fields.find(f => f.name === 'country_code')!.id,
       targetTableId: countriesTable.id,
@@ -105,7 +109,7 @@ export function createSampleECommerceSchema(): Schema {
       type: 'many-to-one'
     },
     {
-      id: uuidv4(),
+      id: 'rel-order-items-orders',
       sourceTableId: orderItemsTable.id,
       sourceFieldId: orderItemsTable.fields.find(f => f.name === 'order_id')!.id,
       targetTableId: ordersTable.id,
@@ -113,7 +117,7 @@ export function createSampleECommerceSchema(): Schema {
       type: 'many-to-one'
     },
     {
-      id: uuidv4(),
+      id: 'rel-order-items-products',
       sourceTableId: orderItemsTable.id,
       sourceFieldId: orderItemsTable.fields.find(f => f.name === 'product_id')!.id,
       targetTableId: productsTable.id,
@@ -121,7 +125,7 @@ export function createSampleECommerceSchema(): Schema {
       type: 'many-to-one'
     },
     {
-      id: uuidv4(),
+      id: 'rel-products-merchants',
       sourceTableId: productsTable.id,
       sourceFieldId: productsTable.fields.find(f => f.name === 'merchant_id')!.id,
       targetTableId: merchantsTable.id,
@@ -129,7 +133,7 @@ export function createSampleECommerceSchema(): Schema {
       type: 'many-to-one'
     },
     {
-      id: uuidv4(),
+      id: 'rel-merchants-countries',
       sourceTableId: merchantsTable.id,
       sourceFieldId: merchantsTable.fields.find(f => f.name === 'country_code')!.id,
       targetTableId: countriesTable.id,
@@ -139,7 +143,7 @@ export function createSampleECommerceSchema(): Schema {
   ];
 
   return {
-    id: uuidv4(),
+    id: SAMPLE_ECOMMERCE_ID,
     name: 'E-Commerce Platform',
     description: 'A comprehensive e-commerce database schema with users, products, orders, and merchant management',
     tables,
@@ -150,14 +154,14 @@ export function createSampleECommerceSchema(): Schema {
 }
 
 export function createSampleBlogSchema(): Schema {
-  // Create tables for a blog system
+  // Create tables for a blog system with fixed IDs
   const usersTable: Table = {
-    id: uuidv4(),
+    id: 'blog-users-table-id',
     name: 'users',
-    position: { x: 100, y: 100 },
+    position: { x: -390, y: 360 },
     fields: [
-      { id: uuidv4(), name: 'id', type: 'uuid', nullable: false, primaryKey: true, foreignKey: false, unique: true },
-      { id: uuidv4(), name: 'username', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: true, length: 50 },
+      { id: 'blog-users-id-field', name: 'id', type: 'uuid', nullable: false, primaryKey: true, foreignKey: false, unique: true },
+      { id: 'blog-users-username-field', name: 'username', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: true, length: 50 },
       { id: uuidv4(), name: 'email', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: true, length: 255 },
       { id: uuidv4(), name: 'password_hash', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: false, length: 255 },
       { id: uuidv4(), name: 'full_name', type: 'varchar', nullable: true, primaryKey: false, foreignKey: false, unique: false, length: 255 },
@@ -170,7 +174,7 @@ export function createSampleBlogSchema(): Schema {
   const postsTable: Table = {
     id: uuidv4(),
     name: 'posts',
-    position: { x: 500, y: 100 },
+    position: { x: 585, y: -210 },
     fields: [
       { id: uuidv4(), name: 'id', type: 'uuid', nullable: false, primaryKey: true, foreignKey: false, unique: true },
       { id: uuidv4(), name: 'author_id', type: 'uuid', nullable: false, primaryKey: false, foreignKey: true, unique: false },
@@ -188,7 +192,7 @@ export function createSampleBlogSchema(): Schema {
   const commentsTable: Table = {
     id: uuidv4(),
     name: 'comments',
-    position: { x: 900, y: 100 },
+    position: { x: -735, y: -810 },
     fields: [
       { id: uuidv4(), name: 'id', type: 'uuid', nullable: false, primaryKey: true, foreignKey: false, unique: true },
       { id: uuidv4(), name: 'post_id', type: 'uuid', nullable: false, primaryKey: false, foreignKey: true, unique: false },
@@ -203,7 +207,7 @@ export function createSampleBlogSchema(): Schema {
   const categoriesTable: Table = {
     id: uuidv4(),
     name: 'categories',
-    position: { x: 100, y: 400 },
+    position: { x: 150, y: 750 },
     fields: [
       { id: uuidv4(), name: 'id', type: 'uuid', nullable: false, primaryKey: true, foreignKey: false, unique: true },
       { id: uuidv4(), name: 'name', type: 'varchar', nullable: false, primaryKey: false, foreignKey: false, unique: true, length: 100 },
@@ -216,7 +220,7 @@ export function createSampleBlogSchema(): Schema {
   const postCategoriesTable: Table = {
     id: uuidv4(),
     name: 'post_categories',
-    position: { x: 500, y: 400 },
+    position: { x: 705, y: 855 },
     fields: [
       { id: uuidv4(), name: 'post_id', type: 'uuid', nullable: false, primaryKey: true, foreignKey: true, unique: false },
       { id: uuidv4(), name: 'category_id', type: 'uuid', nullable: false, primaryKey: true, foreignKey: true, unique: false },

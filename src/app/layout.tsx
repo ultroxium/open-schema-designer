@@ -10,7 +10,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Schema Visualizer - Database Schema Designer",
+  title: "Open Schema Designer - Database Schema Designer",
   description: "Professional database schema designer and visualizer built with Next.js, TypeScript, and React Flow",
 };
 

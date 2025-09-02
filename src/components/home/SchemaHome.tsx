@@ -1,16 +1,18 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Plus, MoreVertical, Trash2, Eye, Search } from 'lucide-react';
+import { Plus, MoreVertical, Trash2, Eye, Search, Home, ArrowLeft } from 'lucide-react';
 import { useApp } from '@/contexts/AppContext';
 import { Schema } from '@/types/schema';
 
 export function SchemaHome() {
+  const router = useRouter();
   const { state, setCurrentSchema, createNewSchema, deleteSchema, loadSchemas } = useApp();
   const [newSchemaName, setNewSchemaName] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
@@ -18,18 +20,19 @@ export function SchemaHome() {
   const handleCreateSchema = () => {
     if (newSchemaName.trim()) {
       const newSchema = createNewSchema(newSchemaName.trim());
-      setCurrentSchema(newSchema);
+      router.push(`/my-designs?schema=${newSchema.id}`);
       setNewSchemaName('');
       loadSchemas();
     }
   };
 
+  const handleOpenSchema = (schema: Schema) => {
+    router.push(`/my-designs?schema=${schema.id}`);
+  };
+
   const handleDeleteSchema = (schemaId: string) => {
     if (confirm('Are you sure you want to delete this schema?')) {
       deleteSchema(schemaId);
-      if (state.currentSchema?.id === schemaId) {
-        setCurrentSchema(null);
-      }
       loadSchemas();
     }
   };
@@ -48,9 +51,17 @@ export function SchemaHome() {
     }).format(date);
   };
 
+  const handleBackHome = () => {
+    router.push('/');
+  };
+
   return (
     <div className="flex-1 p-6">
       <div className="max-w-7xl mx-auto">
+        {/* back button */}
+        <Button variant={'outline'} onClick={handleBackHome}>
+          <ArrowLeft/>
+        </Button>
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Database Schemas</h1>
@@ -124,7 +135,7 @@ export function SchemaHome() {
               <Card 
                 key={schema.id}
                 className="hover:shadow-lg transition-all cursor-pointer group bg-white shadow-none"
-                onClick={() => setCurrentSchema(schema)}
+                onClick={() => handleOpenSchema(schema)}
               >
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
@@ -151,7 +162,7 @@ export function SchemaHome() {
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={(e) => {
                           e.stopPropagation();
-                          setCurrentSchema(schema);
+                          handleOpenSchema(schema);
                         }}>
                           <Eye className="h-4 w-4 mr-2" />
                           Open
@@ -194,7 +205,7 @@ export function SchemaHome() {
                       className="w-full opacity-0 group-hover:opacity-100 transition-opacity"
                       onClick={(e) => {
                         e.stopPropagation();
-                        setCurrentSchema(schema);
+                        handleOpenSchema(schema);
                       }}
                     >
                       <Eye className="h-4 w-4 mr-1" />

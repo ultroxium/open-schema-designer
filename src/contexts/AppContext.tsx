@@ -50,6 +50,7 @@ interface AppContextType {
   setCurrentSchema: (schema: Schema | null) => void;
   saveSchema: (schema: Schema) => void;
   loadSchemas: () => void;
+  loadSchemaById: (schemaId: string) => void;
   createNewSchema: (name: string) => Schema;
   deleteSchema: (schemaId: string) => void;
   shareSchema: (schema: Schema) => string;
@@ -73,13 +74,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const schemas = getSchemasFromStorage();
     dispatch({ type: 'SET_SCHEMAS', payload: schemas });
     
-    // Initialize with sample schemas if no schemas exist and no shared schema
-    if (schemas.length === 0 && !sharedSchema) {
-      initializeSampleSchemas();
-    } else if (!sharedSchema && schemas.length > 0) {
-      // Set the first schema as current if no shared schema
-      setCurrentSchema(schemas[0]);
-    }
+    // // Initialize with sample schemas if no schemas exist and no shared schema
+    // if (schemas.length === 0 && !sharedSchema) {
+    //   initializeSampleSchemas();
+    // } else if (!sharedSchema && schemas.length > 0) {
+    //   // Set the first schema as current if no shared schema
+    //   setCurrentSchema(schemas[0]);
+    // }
   }, []);
 
   const setCurrentSchema = (schema: Schema | null): void => {
@@ -102,6 +103,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const loadSchemas = (): void => {
     const schemas = getSchemasFromStorage();
     dispatch({ type: 'SET_SCHEMAS', payload: schemas });
+  };
+
+  const loadSchemaById = (schemaId: string): void => {
+    const schemas = getSchemasFromStorage();
+    const schema = schemas.find(s => s.id === schemaId);
+    if (schema) {
+      setCurrentSchema(schema);
+    }
   };
 
   const createSchema = (name: string): Schema => {
@@ -131,17 +140,28 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const initializeSampleSchemas = (): void => {
-    const ecommerceSchema = createSampleECommerceSchema();
-    const blogSchema = createSampleBlogSchema();
+    const existingSchemas = getSchemasFromStorage();
     
-    saveSchemaToStorage(ecommerceSchema);
-    saveSchemaToStorage(blogSchema);
+    // Check if sample schemas already exist by name
+    const hasEcommerce = existingSchemas.some(s => s.name === 'E-Commerce Platform');
+    const hasBlog = existingSchemas.some(s => s.name === 'Blog Platform');
     
-    dispatch({ type: 'ADD_SCHEMA', payload: ecommerceSchema });
-    dispatch({ type: 'ADD_SCHEMA', payload: blogSchema });
+    // Only create schemas that don't exist
+    if (!hasEcommerce) {
+      const ecommerceSchema = createSampleECommerceSchema();
+      saveSchemaToStorage(ecommerceSchema);
+      dispatch({ type: 'ADD_SCHEMA', payload: ecommerceSchema });
+    }
     
-    // Set the first schema as current
-    setCurrentSchema(ecommerceSchema);
+    if (!hasBlog) {
+      const blogSchema = createSampleBlogSchema();
+      saveSchemaToStorage(blogSchema);
+      dispatch({ type: 'ADD_SCHEMA', payload: blogSchema });
+    }
+    
+    // Refresh schemas from storage to ensure consistency
+    const updatedSchemas = getSchemasFromStorage();
+    dispatch({ type: 'SET_SCHEMAS', payload: updatedSchemas });
   };
 
   const resetToSampleSchemas = (): void => {
@@ -158,6 +178,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setCurrentSchema,
     saveSchema,
     loadSchemas,
+    loadSchemaById,
     createNewSchema: createSchema,
     deleteSchema,
     shareSchema,

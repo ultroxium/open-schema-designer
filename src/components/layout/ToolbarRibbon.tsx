@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Save, Link, ChevronUp, ChevronDown, Home, Share2, Check, Download, Upload, FileText, Database } from 'lucide-react';
+import { Plus, Save, Link, ChevronUp, ChevronDown, Home, Share2, Check, Download, Upload, FileText, Database, ArrowLeft } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { RelationshipDialog } from '@/components/schema/RelationshipDialog';
 import { useApp } from '@/contexts/AppContext';
@@ -25,6 +26,7 @@ import { Relationship } from '@/types/schema';
 import { toast } from 'sonner';
 
 export function ToolbarRibbon() {
+  const router = useRouter();
   const { state, saveSchema, setCurrentSchema, shareSchema, resetToSampleSchemas } = useApp();
   const [schemaName, setSchemaName] = useState(state.currentSchema?.name || '');
   const [copied, setCopied] = useState(false);
@@ -257,7 +259,7 @@ export function ToolbarRibbon() {
   };
 
   const handleBackHome = () => {
-    setCurrentSchema(null);
+    router.push('/my-designs');
   };
 
   if (!currentSchema) return null;
@@ -275,7 +277,7 @@ export function ToolbarRibbon() {
               size="sm"
               className="flex items-center space-x-2"
             >
-              <Home className="h-4 w-4" />
+              <ArrowLeft/>
             </Button>
             
             <div className="flex items-center space-x-3">

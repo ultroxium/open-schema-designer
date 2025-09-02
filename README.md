@@ -1,59 +1,73 @@
-# Schema Visualizer
+# 🗄️ Open Schema Designer
 
-A professional, open-source database schema designer and visualizer built with Next.js, TypeScript, and React Flow. Create, visualize, and share database schemas with an intuitive drag-and-drop interface.
+A powerful, browser-based database schema designer and visualizer built with Next.js, React Flow, and TypeScript. Design, visualize, and export database schemas with an intuitive drag-and-drop interface.
 
-## Features
+[![Next.js](https://img.shields.io/badge/Next.js-15.5.2-black)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.1.0-blue)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-blue)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-### 🎨 Visual Schema Designer
-- **Drag & Drop Interface**: Create tables and fields with an intuitive visual editor
-- **Real-time Visualization**: See your schema come to life as you build it
-- **Professional Design**: Clean, minimal interface inspired by modern design principles
+## ✨ Features
 
-### 🔗 Relationship Management
-- **Visual Relationships**: Draw connections between tables with animated lines
-- **Relationship Types**: Support for one-to-one, one-to-many, many-to-one, and many-to-many relationships
-- **Interactive Highlighting**: Click relationship lines to highlight connected fields
-- **Field-level Relationships**: Connect specific fields between tables
+### 🎨 **Visual Design**
+- **Drag & Drop Interface**: Intuitive table positioning with React Flow
+- **Real-time Visualization**: See your schema design as you build it
+- **Relationship Mapping**: Visual connections between related tables
+- **Responsive Layout**: Works seamlessly on desktop and mobile devices
 
-### 🗃️ Database Support
-- **PostgreSQL Data Types**: Full support for all PostgreSQL data types including:
-  - Numeric: `int`, `bigint`, `decimal`, `real`, `double precision`
-  - Text: `varchar`, `text`, `char`
-  - Date/Time: `date`, `time`, `timestamp`, `timestamptz`
-  - JSON: `json`, `jsonb`
-  - UUID, Boolean, Arrays, and more
-- **Field Properties**: Configure nullable, primary key, foreign key, unique constraints
-- **Length and Precision**: Set field lengths and decimal precision
+### 🔧 **Advanced Field Management**
+- **Comprehensive Data Types**: Full PostgreSQL type support + extensible for other databases
+- **Rich Constraints**: Primary keys, foreign keys, unique constraints, check constraints
+- **Smart Defaults**: Auto-increment, default values, and function-based defaults
+- **Field Documentation**: Comments and descriptions for better collaboration
 
-### 🌐 Sharing & Collaboration
-- **URL-based Sharing**: Share schemas instantly via URL links
-- **No Account Required**: Start designing immediately without any signup
-- **Local Storage**: Schemas saved in your browser's local storage
-- **Easy Sharing**: Copy and share URLs to show others your schema designs
+### 🔗 **Relationship Management**
+- **Visual Relationship Builder**: Point-and-click relationship creation
+- **Multiple Relationship Types**: One-to-one, one-to-many, many-to-many
+- **Cascade Controls**: ON DELETE and ON UPDATE behavior configuration
+- **Relationship Editing**: Full CRUD operations with visual feedback
 
-### ⌨️ Developer Experience
-- **Keyboard Shortcuts**: 
-  - `Ctrl/Cmd + T`: Add new table
-  - `Ctrl/Cmd + S`: Save schema
-- **Auto-save**: Changes are automatically saved to local storage
-- **Export Ready**: Extensible architecture for future export features
+### � **Multi-Database Export**
+- **PostgreSQL DDL**: Complete SQL schema generation
+- **MySQL DDL**: MySQL-compatible schema export
+- **Prisma Schema**: Generate Prisma ORM schemas
+- **TypeORM Entities**: TypeScript entity classes
+- **Django Models**: Python Django model definitions
+- **Laravel Migrations**: PHP Laravel migration files
+- **JSON Export**: Platform-agnostic schema definitions
 
-## Technology Stack
+### 📥 **Import Capabilities**
+- **JSON Import**: Import previously exported schemas
+- **SQL DDL Parsing**: Import from existing SQL files
+- **Prisma Import**: Convert Prisma schemas to visual diagrams
+- **File Upload**: Drag-and-drop or file picker support
 
-- **Frontend**: Next.js 14 with App Router
-- **Language**: TypeScript for type safety
-- **Styling**: Tailwind CSS for responsive design
-- **Components**: shadcn/ui for consistent UI components
-- **Visualization**: React Flow for the schema diagram
-- **Icons**: Lucide React icons
-- **State Management**: React Context API
-- **Storage**: Local Storage (easily extensible to databases)
+### 🔒 **Privacy & Security**
+- **100% Client-Side**: All data processing happens in your browser
+- **No Server Required**: Zero data transmission to external servers
+- **Local Storage**: Your schemas are saved locally in your browser
+- **URL Sharing**: Share schemas via encoded URLs (optional)
+- **No Account Required**: Start designing immediately
 
-## Getting Started
+### 🌟 **User Experience**
+- **Modern UI**: Clean, professional interface with shadcn/ui components
+- **Toast Notifications**: Real-time feedback for all actions
+- **Keyboard Shortcuts**: Efficient workflow navigation
+- **Auto-Save**: Never lose your work with automatic saving
+- **Dark Mode Ready**: Easy theme customization
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/yourusername/schema-visualizer.git
    cd schema-visualizer
    ```
 
@@ -68,85 +82,179 @@ A professional, open-source database schema designer and visualizer built with N
    ```
 
 4. **Open your browser**
-   Navigate to `http://localhost:3000`
+   ```
+   http://localhost:3000
+   ```
 
-## Usage
+### Production Build
+```bash
+npm run build
+npm start
+```
 
-### Getting Started
-1. **Open the App**: Navigate to the application URL
-2. **Choose Schema**: Start with sample schemas or create a new one
-3. **Start Designing**: Begin adding tables and relationships
+## 📖 Usage Guide
 
-### Creating Schemas
-1. **Add Tables**: Click "Add Table" or press `Ctrl/Cmd + T`
-2. **Edit Fields**: Click on field names and types to edit them inline
-3. **Add Relationships**: Drag from field handle to field handle to create connections
-4. **Save**: Click "Save" or press `Ctrl/Cmd + S`
+### Creating Your First Schema
 
-### Field Connections
-1. **Drag Relationships**: Each field has connection handles (blue dots)
-2. **Connect Fields**: Drag from any field's right handle to another field's left handle
-3. **Visual Feedback**: Relationships appear as animated lines between connected fields
-4. **Click to Highlight**: Click relationship lines to highlight connected fields
+1. **Start Designing**: Visit the homepage and click "Get Started"
+2. **Add Tables**: Use the "Table" button to create new tables
+3. **Design Fields**: Click the three-dot menu on any field for advanced options
+4. **Create Relationships**: Click "Relationship" to connect tables
+5. **Export**: Choose from 6+ export formats
 
-### Sharing
-1. **Share Button**: Click "Share" in the header to copy the URL
-2. **URL Sharing**: Send the copied URL to others to share your schema
-3. **Real-time Updates**: Changes are automatically reflected in shared URLs
+### Field Configuration
 
-## Sample Data
+Access the field constraints dialog through the three-dot menu:
 
-First-time visitors automatically get two sample schemas:
-- **E-Commerce Platform**: Complete online store database with users, products, orders
-- **Blog Platform**: Full blogging system with posts, comments, categories
+- **Data Types**: Choose from 25+ PostgreSQL data types
+- **Constraints**: Primary keys, unique constraints, check constraints
+- **Defaults**: Static values, functions, or expressions
+- **Documentation**: Add comments and descriptions
 
-These schemas demonstrate the full capabilities of the tool and provide a starting point for learning.
+### Relationship Types
 
-## Architecture
+- **One-to-One**: User ↔ Profile
+- **One-to-Many**: User → Posts
+- **Many-to-One**: Posts → User  
+- **Many-to-Many**: Users ↔ Roles (via junction table)
 
-The application is built with a modular, extensible architecture:
+### Export Formats
 
+| Format | Use Case | Output |
+|--------|----------|---------|
+| PostgreSQL DDL | Database creation | `.sql` file |
+| MySQL DDL | MySQL databases | `.sql` file |
+| Prisma Schema | Prisma ORM | `.prisma` file |
+| TypeORM | TypeScript projects | `.ts` entities |
+| Django | Python web apps | `.py` models |
+| Laravel | PHP applications | `.php` migrations |
+| JSON | Platform agnostic | `.json` schema |
+
+## 🏗️ Architecture
+
+### Tech Stack
+- **Frontend**: Next.js 15.5.2 with App Router
+- **Visualization**: React Flow 12.8.4
+- **Styling**: Tailwind CSS 4 + shadcn/ui
+- **State**: React Context API
+- **Storage**: Browser LocalStorage
+- **Types**: Full TypeScript implementation
+
+### Project Structure
 ```
 src/
-├── components/         # React components
-│   ├── schema/        # Schema designer components
-│   ├── create/        # Schema sidebar and management
-│   └── layout/        # Layout components
-├── contexts/          # React contexts
-├── lib/              # Utilities and helpers
-├── types/            # TypeScript type definitions
-└── app/              # Next.js app router pages
+├── app/                    # Next.js App Router pages
+│   ├── page.tsx           # Landing page (/)
+│   └── my-designs/        # Design management (/my-designs)
+├── components/
+│   ├── home/              # Homepage components
+│   ├── schema/            # Schema designer components
+│   ├── layout/            # Layout and navigation
+│   └── ui/                # Reusable UI components
+├── contexts/              # React Context providers
+├── lib/
+│   ├── exporters.ts       # Multi-database export functions
+│   ├── importers.ts       # Schema import functionality
+│   ├── schemaGenerator.ts # Core generation logic
+│   └── storage.ts         # LocalStorage utilities
+└── types/
+    └── schema.ts          # TypeScript definitions
 ```
 
-## Contributing
+## 🛠️ Development
 
-This is an open-source project! Contributions are welcome:
+### Adding New Data Types
 
+1. Update the type definition in `src/types/schema.ts`:
+```typescript
+export type PostgreSQLDataType = 
+  | 'varchar'
+  | 'text'
+  | 'your-new-type'; // Add here
+```
+
+2. Update the type arrays in components and generators
+
+### Adding Export Formats
+
+Create a new exporter in `src/lib/exporters.ts`:
+```typescript
+export function generateCustomFormat(schema: Schema): string {
+  // Your export logic here
+  return formattedOutput;
+}
+```
+
+### Customizing UI
+
+- **Colors**: Edit `tailwind.config.js`
+- **Components**: Modify `src/components/ui/`
+- **Theme**: Adjust CSS variables in `globals.css`
+
+## 🌐 Deployment
+
+### Vercel (Recommended)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/schema-visualizer)
+
+### Docker
+```dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+RUN npm run build
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+### Static Hosting
+```bash
+npm run build
+npm run export
+# Deploy the 'out' folder to any static host
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+### Development Setup
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes and test thoroughly
+4. Commit: `git commit -m 'Add amazing feature'`
+5. Push: `git push origin feature/amazing-feature`
+6. Open a Pull Request
 
-## Future Enhancements
+## 📊 Roadmap
 
-- **Real-time Collaboration**: WebSocket-based live editing
-- **Schema Export**: Generate SQL DDL, migrations, and documentation
-- **Database Integration**: Direct connection to live databases
-- **Version Control**: Schema versioning and history
-- **Team Management**: Organization and permission systems
-- **Advanced Relationships**: Composite keys and complex constraints
+### Upcoming Features
+- [ ] **Database Reverse Engineering**: Import from live databases
+- [ ] **Real-time Collaboration**: Multi-user schema editing
+- [ ] **Version Control**: Schema history and branching
+- [ ] **API Generation**: Auto-generate REST/GraphQL APIs
+- [ ] **Advanced Validation**: Custom constraint validation
+- [ ] **Plugin System**: Extensible architecture
+- [ ] **NoSQL Support**: MongoDB, DynamoDB schemas
+- [ ] **Migration Scripts**: Generate database migrations
 
-## License
+## 📄 License
 
-This project is open source and available under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Support
+## 🙏 Acknowledgments
 
-For questions, suggestions, or issues:
-- Create an issue in the repository
-- Join the community discussions
-- Contribute to the documentation
+- [React Flow](https://reactflow.dev/) - Excellent diagramming library
+- [Radix UI](https://www.radix-ui.com/) - Accessible component primitives  
+- [shadcn/ui](https://ui.shadcn.com/) - Beautiful component patterns
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first styling
+- [Sonner](https://sonner.emilkowal.ski/) - Elegant toast notifications
+
+## ⭐ Show Your Support
+
+If this project helped you, please consider giving it a ⭐ on GitHub!
 
 ---
 
-Built with ❤️ for the developer community
+**Built with ❤️ for the developer community**
