@@ -188,26 +188,7 @@ export function generateCustomFormat(schema: Schema): string {
 ## 🌐 Deployment
 
 ### Vercel (Recommended)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/schema-visualizer)
-
-### Docker
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-COPY . .
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "start"]
-```
-
-### Static Hosting
-```bash
-npm run build
-npm run export
-# Deploy the 'out' folder to any static host
-```
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ultroxium/open-schema-designer)
 
 ## 🤝 Contributing
 
@@ -224,6 +205,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 ## 📊 Roadmap
 
 ### Upcoming Features
+- [ ] **Generative AI**: Generate/modify schemas via natural language
 - [ ] **Database Reverse Engineering**: Import from live databases
 - [ ] **Real-time Collaboration**: Multi-user schema editing
 - [ ] **Version Control**: Schema history and branching
