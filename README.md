@@ -32,9 +32,6 @@ A powerful, browser-based database schema designer and visualizer built with Nex
 - **PostgreSQL DDL**: Complete SQL schema generation
 - **MySQL DDL**: MySQL-compatible schema export
 - **Prisma Schema**: Generate Prisma ORM schemas
-- **TypeORM Entities**: TypeScript entity classes
-- **Django Models**: Python Django model definitions
-- **Laravel Migrations**: PHP Laravel migration files
 - **JSON Export**: Platform-agnostic schema definitions
 
 ### 📥 **Import Capabilities**
@@ -125,9 +122,6 @@ Access the field constraints dialog through the three-dot menu:
 | PostgreSQL DDL | Database creation | `.sql` file |
 | MySQL DDL | MySQL databases | `.sql` file |
 | Prisma Schema | Prisma ORM | `.prisma` file |
-| TypeORM | TypeScript projects | `.ts` entities |
-| Django | Python web apps | `.py` models |
-| Laravel | PHP applications | `.php` migrations |
 | JSON | Platform agnostic | `.json` schema |
 
 ## 🏗️ Architecture
