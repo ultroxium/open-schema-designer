@@ -64,8 +64,8 @@ A powerful, browser-based database schema designer and visualizer built with Nex
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/schema-visualizer.git
-   cd schema-visualizer
+   git clone https://github.com/ultroxium/open-schema-designer.git
+   cd open-schema-designer
    ```
 
 2. **Install dependencies**

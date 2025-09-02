@@ -47,7 +47,7 @@ export function LandingPage() {
                     <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => window.open('https://github.com', '_blank')}
+                        onClick={() => window.open('https://github.com/ultroxium/open-schema-designer', '_blank')}
                         className="flex items-center space-x-2"
                     >
                         <Star className="h-4 w-4" />
@@ -217,7 +217,7 @@ export function LandingPage() {
                             variant="outline"
                             size="lg"
                             className="px-8 py-3 text-base font-medium"
-                            onClick={() => window.open('https://github.com', '_blank')}
+                            onClick={() => window.open('https://github.com/ultroxium/open-schema-designer', '_blank')}
                         >
                             <Github className="mr-2 h-5 w-5" />
                             View on GitHub
