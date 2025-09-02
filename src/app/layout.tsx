@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from 'next/font/google';
 import "./globals.css";
 import { AppProvider } from "@/contexts/AppContext";
+import { Toaster } from "sonner";
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -9,8 +10,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Schema Visualizer",
-  description: "Professional database schema designer and visualizer",
+  title: "Schema Visualizer - Database Schema Designer",
+  description: "Professional database schema designer and visualizer built with Next.js, TypeScript, and React Flow",
 };
 
 export default function RootLayout({
@@ -25,6 +26,12 @@ export default function RootLayout({
       >
         <AppProvider>
           {children}
+          <Toaster 
+            position="top-right" 
+            toastOptions={{
+              duration: 3000,
+            }}
+          />
         </AppProvider>
       </body>
     </html>

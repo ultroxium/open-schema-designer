@@ -10,6 +10,8 @@ import { Badge } from '@/components/ui/badge';
 import { Plus, Trash2, Key, Link, Table as TableIcon } from 'lucide-react';
 import { Table, TableField, PostgreSQLDataType } from '@/types/schema';
 import { createNewField } from '@/lib/storage';
+import { FieldConstraintsDialog } from './FieldConstraintsDialog';
+import { toast } from 'sonner';
 
 interface TableNodeProps {
   data: {
@@ -38,6 +40,7 @@ export const TableNode = memo(({ data }: TableNodeProps) => {
         ...table,
         name: tableName.trim()
       });
+      toast.success('Table renamed successfully');
     }
     setIsEditing(false);
   };
@@ -48,6 +51,7 @@ export const TableNode = memo(({ data }: TableNodeProps) => {
       ...table,
       fields: [...table.fields, newField]
     });
+    toast.success('Field added successfully');
   };
 
   const handleUpdateField = (fieldId: string, updates: Partial<TableField>) => {
@@ -67,6 +71,9 @@ export const TableNode = memo(({ data }: TableNodeProps) => {
         ...table,
         fields: updatedFields
       });
+      toast.success('Field deleted successfully');
+    } else {
+      toast.error('Cannot delete the last field');
     }
   };
 
@@ -112,7 +119,7 @@ export const TableNode = memo(({ data }: TableNodeProps) => {
         
         <CardContent className="pt-0">
           <div className="space-y-1">
-            {table.fields.map((field,index) => (
+            {table.fields.map((field, index) => (
               <div
                 key={field.id}
                 className={`relative flex items-center space-x-2 p-2 rounded transition-colors group ${index === table.fields.length - 1 ? 'border-b-0' : 'border-b border-gray-200'} ${
@@ -138,6 +145,7 @@ export const TableNode = memo(({ data }: TableNodeProps) => {
                   isConnectable={true}
                   className="!w-2 !h-2 !bg-transparent !border-2 !border-white !rounded-full opacity-70 group-hover:opacity-100 hover:!opacity-100 transition-all duration-200 cursor-crosshair !absolute !right-[-16px] !top-1/2 !-translate-y-1/2 shadow-lg hover:!bg-blue-600 hover:!border-blue-200 hover:!scale-125 hover:shadow-xl"
                 />
+                
                 <div className="flex items-center space-x-1 flex-1 min-w-0">
                   <Input
                     value={field.name}
@@ -147,6 +155,10 @@ export const TableNode = memo(({ data }: TableNodeProps) => {
                   />
                   {field.primaryKey && <Key className="h-3 w-3 text-yellow-600 flex-shrink-0" />}
                   {field.foreignKey && <Link className="h-3 w-3 text-blue-600 flex-shrink-0" />}
+                  {field.unique && !field.primaryKey && <Badge variant="outline" className="text-xs px-1 py-0">UQ</Badge>}
+                  {!field.nullable && <Badge variant="destructive" className="text-xs px-1 py-0">NN</Badge>}
+                  {field.autoIncrement && <Badge variant="default" className="text-xs px-1 py-0">AI</Badge>}
+                  {field.defaultValue && <Badge variant="secondary" className="text-xs px-1 py-0">DEF</Badge>}
                 </div>
                 
                 <Select
@@ -167,25 +179,12 @@ export const TableNode = memo(({ data }: TableNodeProps) => {
                   </SelectContent>
                 </Select>
                 
-                <div className="flex space-x-1">
-                  <Badge
-                    variant={field.nullable ? "secondary" : "default"}
-                    className="text-xs cursor-pointer"
-                    onClick={() => handleUpdateField(field.id, { nullable: !field.nullable })}
-                  >
-                    {field.nullable ? 'NULL' : 'NOT NULL'}
-                  </Badge>
-                  
-                  {table.fields.length > 1 && (
-                    <Button
-                      onClick={() => handleDeleteField(field.id)}
-                      variant="ghost"
-                      size="sm"
-                      className="h-6 w-6 p-0 text-red-500 hover:text-red-700"
-                    >
-                      <Trash2 className="h-3 w-3" />
-                    </Button>
-                  )}
+                <div className="flex items-center space-x-1">
+                  <FieldConstraintsDialog
+                    field={field}
+                    onUpdateField={(updates) => handleUpdateField(field.id, updates)}
+                    onDeleteField={() => handleDeleteField(field.id)}
+                  />
                 </div>
               </div>
             ))}

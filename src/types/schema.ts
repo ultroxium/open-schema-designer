@@ -21,6 +21,9 @@ export interface TableField {
   length?: number;
   precision?: number;
   scale?: number;
+  comment?: string;
+  autoIncrement?: boolean;
+  checkConstraint?: string;
 }
 
 export interface Table {
@@ -39,6 +42,8 @@ export interface Relationship {
   targetFieldId: string;
   type: RelationshipType;
   name?: string;
+  onDelete?: 'CASCADE' | 'RESTRICT' | 'SET NULL' | 'NO ACTION';
+  onUpdate?: 'CASCADE' | 'RESTRICT' | 'SET NULL' | 'NO ACTION';
 }
 
 export interface Schema {

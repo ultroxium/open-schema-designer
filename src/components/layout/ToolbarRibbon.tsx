@@ -4,16 +4,34 @@ import React, { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Save, Link, ChevronUp, ChevronDown, Home, Share2, Check } from 'lucide-react';
+import { Plus, Save, Link, ChevronUp, ChevronDown, Home, Share2, Check, Download, Upload, FileText, Database } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { RelationshipDialog } from '@/components/schema/RelationshipDialog';
 import { useApp } from '@/contexts/AppContext';
 import { createNewTable } from '@/lib/storage';
+import { generateSQLFromSchema, generatePrismaSchema } from '@/lib/schemaGenerator';
+import {
+  generateMySQLFromSchema,
+  generateTypeORMEntities,
+  generateDjangoModels,
+  generateLaravelMigrations
+} from '@/lib/exporters';
+import {
+  importFromJSON,
+  importFromSQL,
+  importFromPrisma
+} from '@/lib/importers';
 import { Relationship } from '@/types/schema';
+import { toast } from 'sonner';
 
 export function ToolbarRibbon() {
   const { state, saveSchema, setCurrentSchema, shareSchema, resetToSampleSchemas } = useApp();
   const [schemaName, setSchemaName] = useState(state.currentSchema?.name || '');
   const [copied, setCopied] = useState(false);
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
+  const [importType, setImportType] = useState<'json' | 'sql' | 'prisma'>('json');
+  const [importData, setImportData] = useState('');
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const currentSchema = state.currentSchema;
 
@@ -40,6 +58,7 @@ export function ToolbarRibbon() {
     };
 
     setCurrentSchema(updatedSchema);
+    toast.success('Table added successfully');
   }, [currentSchema, setCurrentSchema]);
 
   const handleAddRelationship = useCallback((relationship: Relationship) => {
@@ -48,6 +67,32 @@ export function ToolbarRibbon() {
     const updatedSchema = {
       ...currentSchema,
       relationships: [...currentSchema.relationships, relationship],
+      updatedAt: new Date()
+    };
+
+    setCurrentSchema(updatedSchema);
+  }, [currentSchema, setCurrentSchema]);
+
+  const handleEditRelationship = useCallback((relationshipId: string, updates: Partial<Relationship>) => {
+    if (!currentSchema) return;
+
+    const updatedSchema = {
+      ...currentSchema,
+      relationships: currentSchema.relationships.map(rel => 
+        rel.id === relationshipId ? { ...rel, ...updates } : rel
+      ),
+      updatedAt: new Date()
+    };
+
+    setCurrentSchema(updatedSchema);
+  }, [currentSchema, setCurrentSchema]);
+
+  const handleDeleteRelationship = useCallback((relationshipId: string) => {
+    if (!currentSchema) return;
+
+    const updatedSchema = {
+      ...currentSchema,
+      relationships: currentSchema.relationships.filter(rel => rel.id !== relationshipId),
       updatedAt: new Date()
     };
 
@@ -75,6 +120,7 @@ export function ToolbarRibbon() {
 
     saveSchema(finalSchema);
     setCurrentSchema(finalSchema);
+    toast.success('Schema saved successfully');
   };
 
   const handleShareSchema = () => {
@@ -83,7 +129,131 @@ export function ToolbarRibbon() {
       navigator.clipboard.writeText(shareUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+      toast.success('Share link copied to clipboard');
     }
+  };
+
+  const handleExportSQL = () => {
+    if (!currentSchema) return;
+    
+    try {
+      const sql = generateSQLFromSchema(currentSchema);
+      const blob = new Blob([sql], { type: 'text/sql' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${currentSchema.name.replace(/\s+/g, '_')}.sql`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      toast.success('SQL file exported successfully');
+    } catch (error) {
+      console.error('Error exporting SQL:', error);
+      toast.error('Failed to export SQL file');
+    }
+  };
+
+  const handleExportPrisma = () => {
+    if (!currentSchema) return;
+    
+    try {
+      const prisma = generatePrismaSchema(currentSchema);
+      const blob = new Blob([prisma], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${currentSchema.name.replace(/\s+/g, '_')}.prisma`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      toast.success('Prisma schema exported successfully');
+    } catch (error) {
+      console.error('Error exporting Prisma:', error);
+      toast.error('Failed to export Prisma schema');
+    }
+  };
+
+  const handleExportJSON = () => {
+    if (!currentSchema) return;
+    
+    try {
+      const json = JSON.stringify(currentSchema, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${currentSchema.name.replace(/\s+/g, '_')}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      toast.success('JSON schema exported successfully');
+    } catch (error) {
+      console.error('Error exporting JSON:', error);
+      toast.error('Failed to export JSON schema');
+    }
+  };
+
+  const handleImportSchema = () => {
+    if (!importData.trim()) {
+      toast.error('Please provide import data');
+      return;
+    }
+
+    try {
+      let importedSchema;
+      
+      switch (importType) {
+        case 'json':
+          importedSchema = importFromJSON(importData);
+          break;
+        case 'sql':
+          importedSchema = importFromSQL(importData);
+          break;
+        case 'prisma':
+          importedSchema = importFromPrisma(importData);
+          break;
+        default:
+          throw new Error('Invalid import type');
+      }
+
+      setCurrentSchema(importedSchema);
+      setImportDialogOpen(false);
+      setImportData('');
+      toast.success(`Schema imported successfully from ${importType.toUpperCase()}`);
+    } catch (error) {
+      console.error('Import error:', error);
+      toast.error(`Failed to import schema: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  };
+
+  const handleFileImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target?.result as string;
+      setImportData(content);
+      
+      // Auto-detect file type
+      if (file.name.endsWith('.json')) {
+        setImportType('json');
+      } else if (file.name.endsWith('.sql')) {
+        setImportType('sql');
+      } else if (file.name.endsWith('.prisma')) {
+        setImportType('prisma');
+      }
+    };
+    reader.readAsText(file);
   };
 
   const handleBackHome = () => {
@@ -130,6 +300,9 @@ export function ToolbarRibbon() {
                 <RelationshipDialog 
                   tables={currentSchema.tables} 
                   onAddRelationship={handleAddRelationship}
+                  existingRelationships={currentSchema.relationships}
+                  onEditRelationship={handleEditRelationship}
+                  onDeleteRelationship={handleDeleteRelationship}
                 >
                   <Button variant="outline" size="sm">
                     <Link className="h-4 w-4 mr-1" />
@@ -143,6 +316,96 @@ export function ToolbarRibbon() {
                   <Save className="h-4 w-4 mr-1" />
                   Save
                 </Button>
+                
+                <DropdownMenu open={importDialogOpen} onOpenChange={setImportDialogOpen}>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm">
+                      <Upload className="h-4 w-4 mr-1" />
+                      Import
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-96">
+                    <div className="p-4 space-y-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Import Type</label>
+                        <select 
+                          value={importType} 
+                          onChange={(e) => setImportType(e.target.value as 'json' | 'sql' | 'prisma')}
+                          className="w-full p-2 border rounded"
+                        >
+                          <option value="json">JSON Schema</option>
+                          <option value="sql">SQL DDL</option>
+                          <option value="prisma">Prisma Schema</option>
+                        </select>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Import Data</label>
+                        <textarea
+                          value={importData}
+                          onChange={(e) => setImportData(e.target.value)}
+                          placeholder="Paste your schema here..."
+                          className="w-full h-32 p-2 border rounded text-sm"
+                        />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Or upload file</label>
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept=".json,.sql,.prisma"
+                          onChange={handleFileImport}
+                          className="w-full p-2 border rounded text-sm"
+                        />
+                      </div>
+                      
+                      <div className="flex justify-end space-x-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => {
+                            setImportDialogOpen(false);
+                            setImportData('');
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                        <Button 
+                          size="sm"
+                          onClick={handleImportSchema}
+                          disabled={!importData.trim()}
+                        >
+                          Import
+                        </Button>
+                      </div>
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm">
+                      <Download className="h-4 w-4 mr-1" />
+                      Export
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={handleExportSQL}>
+                      <Database className="h-4 w-4 mr-2" />
+                      Export SQL
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleExportPrisma}>
+                      <FileText className="h-4 w-4 mr-2" />
+                      Export Prisma
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleExportJSON}>
+                      <FileText className="h-4 w-4 mr-2" />
+                      Export JSON
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
                 <Button 
                   onClick={handleShareSchema}
                   variant="outline" 
